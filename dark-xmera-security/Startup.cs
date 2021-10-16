@@ -1,9 +1,16 @@
+using Core.Configurations;
+using Core.Interfaces;
+using Core.Managers;
+using Helpers.Database;
+using Helpers.Database.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace dark_xmera_security
 {
@@ -25,6 +32,22 @@ namespace dark_xmera_security
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dark_xmera_security", Version = "v1" });
             });
+
+            string connectionString = Environment.GetEnvironmentVariable(EnviromentVariables.DarkXmeraSecurityDbConnectionString);
+            services.AddDbContext<DarkXmeraSecurityDbContext>(options => options.UseSqlServer(connectionString));
+
+            BuildRepositoriesToScope(services);
+            BuildManagersToScope(services);
+        }
+
+        private void BuildRepositoriesToScope(IServiceCollection services)
+        {
+            services.AddScoped<IActionRepository, ActionRepository>();
+        }
+
+        private void BuildManagersToScope(IServiceCollection services)
+        {
+            services.AddScoped<ActionManager, ActionManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
