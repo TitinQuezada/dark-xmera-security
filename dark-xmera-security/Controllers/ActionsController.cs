@@ -22,14 +22,22 @@ namespace dark_xmera_security.Controllers
         [HttpGet]
         public async Task<HttpResponse<IEnumerable<ActionViewModel>>> GetAll()
         {
-            IOperationResult<IEnumerable<ActionViewModel>> operationResult = await _actionManager.GetAll();
-
-            if (!operationResult.Success)
+            try
             {
-                return HttpResponse<IEnumerable<ActionViewModel>>.GetFailedResponse(operationResult.Message);
+                IOperationResult<IEnumerable<ActionViewModel>> operationResult = await _actionManager.GetAll();
+
+                if (!operationResult.Success)
+                {
+                    return HttpResponse<IEnumerable<ActionViewModel>>.GetFailedResponse(operationResult.Message);
+                }
+
+                return HttpResponse<IEnumerable<ActionViewModel>>.GetSuccessResponse(operationResult.Entity);
+            }
+            catch (System.Exception ex)
+            {
+                return HttpResponse<IEnumerable<ActionViewModel>>.GetFailedResponse(ex.ToString());
             }
 
-            return HttpResponse<IEnumerable<ActionViewModel>>.GetSuccessResponse(operationResult.Entity);
         }
     }
 }
