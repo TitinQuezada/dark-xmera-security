@@ -31,5 +31,57 @@ namespace dark_xmera_security.Controllers
 
             return HttpResponse<IEnumerable<ActionViewModel>>.GetSuccessResponse(operationResult.Entity);
         }
+
+        [HttpGet("{id}")]
+        public async Task<HttpResponse<ActionViewModel>> GetById(string id)
+        {
+            IOperationResult<ActionViewModel> operationResult = await _actionManager.GetById(id);
+
+            if (!operationResult.Success)
+            {
+                return HttpResponse<ActionViewModel>.GetFailedResponse(operationResult.Message);
+            }
+
+            return HttpResponse<ActionViewModel>.GetSuccessResponse(operationResult.Entity);
+        }
+
+        [HttpPost]
+        public async Task<HttpResponse<bool>> Create(ActionCreateOrEditViewModel action)
+        {
+            IOperationResult<bool> operationResult = await _actionManager.Create(action);
+
+            if (!operationResult.Success)
+            {
+                return HttpResponse<bool>.GetFailedResponse(operationResult.Message);
+            }
+
+            return HttpResponse<bool>.GetSuccessResponse(operationResult.Entity);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<HttpResponse<bool>> Update(string id, ActionCreateOrEditViewModel action)
+        {
+            IOperationResult<bool> operationResult = await _actionManager.Update(id ,action);
+
+            if (!operationResult.Success)
+            {
+                return HttpResponse<bool>.GetFailedResponse(operationResult.Message);
+            }
+
+            return HttpResponse<bool>.GetSuccessResponse(operationResult.Entity);
+        }
+
+        [HttpDelete]
+        public async Task<HttpResponse<bool>> Delete(string id)
+        {
+            IOperationResult<bool> operationResult = await _actionManager.Delete(id);
+
+            if (!operationResult.Success)
+            {
+                return HttpResponse<bool>.GetFailedResponse(operationResult.Message);
+            }
+
+            return HttpResponse<bool>.GetSuccessResponse(operationResult.Entity);
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace Core.Models
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }
+
+        public StatusModel Status { get; set; }
     }
 }

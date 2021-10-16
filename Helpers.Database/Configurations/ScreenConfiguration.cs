@@ -8,10 +8,10 @@ namespace Helpers.Database.Configurations
     {
         public void Configure(EntityTypeBuilder<ScreenModel> builder)
         {
-            builder.Property(module => module.Name).IsRequired().HasMaxLength(30);
-            builder.HasIndex(module => module.Name).IsUnique();
+            builder.Property(screen => screen.Name).IsRequired().HasMaxLength(30);
+            builder.HasIndex(screen => screen.Name).IsUnique();
 
-            builder.Property(module => module.Description).IsRequired().HasMaxLength(100);
+            builder.Property(screen => screen.Description).IsRequired().HasMaxLength(100);
         }
     }
 }
