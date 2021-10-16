@@ -33,4 +33,3 @@ namespace dark_xmera_security.Controllers
         }
     }
 }
-}
