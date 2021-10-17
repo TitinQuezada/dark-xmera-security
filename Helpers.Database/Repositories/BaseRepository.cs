@@ -1,4 +1,6 @@
-﻿using Core.Interfaces;
+﻿using Core.Enums;
+using Core.Interfaces;
+using Core.Interfaces.Repositories;
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +24,9 @@ namespace Helpers.Database.Repositories
 
         void IBaseRepository<T>.Create(T entity)
         {
+            StatusModel status = _applicationContext.Statuses.FirstOrDefault(status => status.Id == (int)Statuses.Active);
+            entity.Status = status;
+
             _set.Add(entity);
         }
 
@@ -30,8 +35,9 @@ namespace Helpers.Database.Repositories
             IQueryable<T> queryable = _set.AsQueryable();
 
             T entity = queryable.FirstOrDefault(entity => entity.Id == entityId);
+            StatusModel status = _applicationContext.Statuses.FirstOrDefault(status => status.Id == (int)Statuses.Inactive);
 
-            _set.Remove(entity);
+            entity.Status = status;
         }
 
         async Task<IEnumerable<T>> IBaseRepository<T>.FindAllAsync(Expression<Func<T, bool>> condition, params Expression<Func<T, object>>[] includes)
@@ -43,7 +49,9 @@ namespace Helpers.Database.Repositories
                 queryable = queryable.Include(include);
             }
 
-            return await queryable.Where(condition).ToListAsync();
+            queryable = queryable.Include(entity => entity.Status);
+
+            return await queryable.Where(condition).Where(entity => entity.Status.Id == (int)Statuses.Active).ToListAsync();
         }
 
         async Task<T> IBaseRepository<T>.FindAsync(Expression<Func<T, bool>> condition, params Expression<Func<T, object>>[] includes)
@@ -55,7 +63,9 @@ namespace Helpers.Database.Repositories
                 queryable = queryable.Include(include);
             }
 
-            return await queryable.Where(condition).FirstOrDefaultAsync();
+            queryable = queryable.Include(entity => entity.Status);
+
+            return await queryable.Where(condition).Where(entity => entity.Status.Id == (int)Statuses.Active).FirstOrDefaultAsync();
         }
 
         async Task<IEnumerable<T>> IBaseRepository<T>.GetAllAsync(params Expression<Func<T, object>>[] includes)
@@ -67,7 +77,9 @@ namespace Helpers.Database.Repositories
                 queryable = queryable.Include(include);
             }
 
-            return await queryable.ToListAsync();
+            queryable = queryable.Include(entity => entity.Status);
+
+            return await queryable.Where(entity => entity.Status.Id == (int)Statuses.Active).ToListAsync();
         }
 
         async Task IBaseRepository<T>.SaveAsync()

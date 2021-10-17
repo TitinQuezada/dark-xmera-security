@@ -21,6 +21,8 @@ namespace Helpers.Database
 
         public DbSet<ActionModel> Actions { get; set; }
 
+        public DbSet<StatusModel> Statuses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(DarkXmeraSecurityDbContext)));
