@@ -4,14 +4,16 @@ using Helpers.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Helpers.Database.Migrations
 {
     [DbContext(typeof(DarkXmeraSecurityDbContext))]
-    partial class DarkXmeraSecurityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211017203238_add-module-and-screen-url")]
+    partial class addmoduleandscreenurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

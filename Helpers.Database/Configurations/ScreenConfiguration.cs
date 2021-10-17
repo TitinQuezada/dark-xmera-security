@@ -12,6 +12,9 @@ namespace Helpers.Database.Configurations
             builder.HasIndex(screen => screen.Name).IsUnique();
 
             builder.Property(screen => screen.Description).IsRequired().HasMaxLength(100);
+
+            builder.HasIndex(screen => screen.Url).IsUnique();
+            builder.Property(screen => screen.Url).IsRequired().HasMaxLength(50);
         }
     }
 }
