@@ -1,5 +1,5 @@
 using Core.Configurations;
-using Core.Interfaces;
+using Core.Interfaces.Repositories;
 using Core.Managers;
 using Helpers.Database;
 using Helpers.Database.Repositories;
@@ -43,11 +43,17 @@ namespace dark_xmera_security
         private void BuildRepositoriesToScope(IServiceCollection services)
         {
             services.AddScoped<IActionRepository, ActionRepository>();
+            services.AddScoped<IScreenRepository, ScreenRepository>();
+            services.AddScoped<IModuleRepository, ModuleRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
 
         private void BuildManagersToScope(IServiceCollection services)
         {
             services.AddScoped<ActionManager, ActionManager>();
+            services.AddScoped<ScreenManager, ScreenManager>();
+            services.AddScoped<ModuleManager, ModuleManager>();
+            services.AddScoped<RoleManager, RoleManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
