@@ -12,6 +12,8 @@ namespace Helpers.Database.Configurations
             builder.HasIndex(action => action.Name).IsUnique();
 
             builder.Property(action => action.Description).IsRequired().HasMaxLength(100);
+
+            builder.HasOne(action => action.Status).WithMany(status => status.Actions).HasForeignKey(action => action.StatusId).IsRequired();
         }
     }
 }

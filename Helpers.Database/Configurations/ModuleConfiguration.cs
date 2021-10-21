@@ -1,7 +1,7 @@
-﻿using Core.Models;
+﻿using Core.Enums;
+using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace Helpers.Database.Configurations
 {
@@ -20,14 +20,15 @@ namespace Helpers.Database.Configurations
             builder.Property(screen => screen.CreatedDate).HasDefaultValueSql("getdate()");
             builder.Property(screen => screen.UpdatedDate).HasDefaultValueSql("getdate()");
 
+            builder.HasOne(module => module.Status).WithMany(status => status.Modules).HasForeignKey(module => module.StatusId).IsRequired();
 
             builder.HasData(new ModuleModel
             {
-                Id = Guid.NewGuid().ToString(),
-                Name = "Security",
-                Description = "This is a security module",
+                Id = "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7",
+                Name = "Seguridad",
+                Description = "Este es el modulo de seguridad",
                 Url = "security",
-                Status = null
+                StatusId = (int)Statuses.Active
             });
         }
     }

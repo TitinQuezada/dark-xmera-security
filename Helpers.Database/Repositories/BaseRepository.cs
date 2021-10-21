@@ -1,5 +1,4 @@
 ﻿using Core.Enums;
-using Core.Interfaces;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +19,12 @@ namespace Helpers.Database.Repositories
         {
             _applicationContext = applicationContext;
             _set = applicationContext.Set<T>();
+        }
+
+        public async Task<bool> ExistAsync(Expression<Func<T, bool>> condition)
+        {
+            IQueryable<T> queryable = _set.AsQueryable();
+            return await queryable.AnyAsync(condition);
         }
 
         void IBaseRepository<T>.Create(T entity)

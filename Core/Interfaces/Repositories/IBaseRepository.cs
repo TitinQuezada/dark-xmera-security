@@ -1,6 +1,7 @@
 ﻿using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -15,6 +16,8 @@ namespace Core.Interfaces.Repositories
         void Delete(string entityId);
 
         Task<T> FindAsync(Expression<Func<T, bool>> condition, params Expression<Func<T, object>>[] includes);
+
+        Task<bool> ExistAsync(Expression<Func<T, bool>> condition);
 
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> condition, params Expression<Func<T, object>>[] includes);
 

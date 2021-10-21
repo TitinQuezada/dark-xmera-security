@@ -39,15 +39,16 @@ namespace Core.Managers
             return OperationResult<ModuleViewModel>.Ok(moduleResult);
         }
 
-        private ModuleViewModel BuildModuleViewModel(ModuleModel screen)
+        private ModuleViewModel BuildModuleViewModel(ModuleModel module)
         {
             return new ModuleViewModel
             {
-                Id = screen.Id,
-                Name = screen.Name,
-                Description = screen.Description,
-                CreatedDate = screen.CreatedDate,
-                UpdatedDate = screen.UpdatedDate
+                Id = module.Id,
+                Name = module.Name,
+                Url = module.Url,
+                Description = module.Description,
+                CreatedDate = module.CreatedDate,
+                UpdatedDate = module.UpdatedDate
             };
         }
 
@@ -64,15 +65,16 @@ namespace Core.Managers
             return OperationResult<bool>.Ok();
         }
 
-        private ModuleModel BuildModuleModel(ModuleCreateOrEditViewModel action)
+        private ModuleModel BuildModuleModel(ModuleCreateOrEditViewModel module)
         {
             return new ModuleModel
             {
-                Id = action.Id,
-                Name = action.Name,
-                Description = action.Description,
-                CreatedDate = action.CreatedDate,
-                UpdatedDate = action.UpdatedDate
+                Id = module.Id,
+                Name = module.Name,
+                Description = module.Description,
+                CreatedDate = module.CreatedDate,
+                UpdatedDate = module.UpdatedDate,
+                Url = module.Url
             };
         }
 
@@ -88,6 +90,7 @@ namespace Core.Managers
             moduleToUpdateResult.Name = moduleToUpdate.Name;
             moduleToUpdateResult.Description = moduleToUpdate.Description;
             moduleToUpdateResult.UpdatedDate = DateTime.Now;
+            moduleToUpdateResult.Url = moduleToUpdate.Url;
 
             await _moduleRepository.SaveAsync();
             return OperationResult<bool>.Ok();

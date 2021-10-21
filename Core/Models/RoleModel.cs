@@ -10,5 +10,9 @@ namespace Core.Models
         public string Description { get; set; }
 
         public IEnumerable<UserModel> Users { get; set; }
+
+        public IEnumerable<ModuleModel> Modules { get; set; }
+
+        public IEnumerable<ScreenModel> Screens { get; set; }
     }
 }

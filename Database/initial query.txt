@@ -1,0 +1,1 @@
+  insert into ModuleModelRoleModel values ('d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7' , '108d0430-3a5b-423b-a23a-393d35e681f4')
