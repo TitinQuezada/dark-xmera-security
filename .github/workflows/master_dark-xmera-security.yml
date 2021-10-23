@@ -24,7 +24,7 @@ jobs:
 
       - name: Update database
         run: |
-          dotnet tool install --global dotnet-ef
+          dotnet tool install --global dotnet-ef --version 5.0.11 
           dotnet tool restore
           dotnet ef database update -c DarkXmeraSecurityDbContext -p Helpers.Database --connection "Persist Security Info=False;User ID=dark-xmera; Password=P@ssword;Initial Catalog=dark-xmera-security;Data Source=dark-xmera.database.windows.net" dark-xmera-security
 
