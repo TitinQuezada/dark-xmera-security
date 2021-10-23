@@ -1,6 +1,6 @@
-﻿namespace Core.Models
+﻿namespace Core.ViewModels.User
 {
-    public sealed class UserModel : BaseModel
+    public sealed class UserCreateOrEditViewModel : BaseViewModel
     {
         public string UserName { get; set; }
 
@@ -9,7 +9,5 @@
         public string Email { get; set; }
 
         public string RoleId { get; set; }
-
-        public RoleModel Role { get; set; }
     }
 }

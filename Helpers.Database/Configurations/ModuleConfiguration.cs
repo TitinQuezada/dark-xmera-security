@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Enums;
+using Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,6 +13,23 @@ namespace Helpers.Database.Configurations
             builder.HasIndex(module => module.Name).IsUnique();
 
             builder.Property(module => module.Description).IsRequired().HasMaxLength(100);
+
+            builder.HasIndex(screen => screen.Url).IsUnique();
+            builder.Property(screen => screen.Url).IsRequired().HasMaxLength(50);
+
+            builder.Property(screen => screen.CreatedDate).HasDefaultValueSql("getdate()");
+            builder.Property(screen => screen.UpdatedDate).HasDefaultValueSql("getdate()");
+
+            builder.HasOne(module => module.Status).WithMany(status => status.Modules).HasForeignKey(module => module.StatusId).IsRequired();
+
+            builder.HasData(new ModuleModel
+            {
+                Id = "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7",
+                Name = "Seguridad",
+                Description = "Este es el modulo de seguridad",
+                Url = "security",
+                StatusId = (int)Statuses.Active
+            });
         }
     }
 }

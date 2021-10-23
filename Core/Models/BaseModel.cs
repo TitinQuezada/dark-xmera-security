@@ -10,6 +10,8 @@ namespace Core.Models
 
         public DateTime UpdatedDate { get; set; }
 
+        public int StatusId { get; set; }
+
         public StatusModel Status { get; set; }
     }
 }

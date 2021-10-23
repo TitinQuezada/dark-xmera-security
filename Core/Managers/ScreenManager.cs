@@ -45,6 +45,7 @@ namespace Core.Managers
             {
                 Id = screen.Id,
                 Name = screen.Name,
+                Url = screen.Url,
                 Description = screen.Description,
                 CreatedDate = screen.CreatedDate,
                 UpdatedDate = screen.UpdatedDate
@@ -64,15 +65,17 @@ namespace Core.Managers
             return OperationResult<bool>.Ok();
         }
 
-        private ScreenModel BuildScreenModel(ScreenCreateOrEditViewModel action)
+        private ScreenModel BuildScreenModel(ScreenCreateOrEditViewModel screen)
         {
             return new ScreenModel
             {
-                Id = action.Id,
-                Name = action.Name,
-                Description = action.Description,
-                CreatedDate = action.CreatedDate,
-                UpdatedDate = action.UpdatedDate
+                Id = screen.Id,
+                Name = screen.Name,
+                Description = screen.Description,
+                CreatedDate = screen.CreatedDate,
+                UpdatedDate = screen.UpdatedDate,
+                Url = screen.Url,
+                ModuleId = screen.ModuleId
             };
         }
 
@@ -88,6 +91,7 @@ namespace Core.Managers
             screenToUpdateResult.Name = screenToUpdate.Name;
             screenToUpdateResult.Description = screenToUpdate.Description;
             screenToUpdateResult.UpdatedDate = DateTime.Now;
+            screenToUpdateResult.Url = screenToUpdate.Url;
 
             await _screenRepository.SaveAsync();
             return OperationResult<bool>.Ok();
