@@ -28,7 +28,7 @@ jobs:
           dotnet tool restore
           dotnet ef database update -c DarkXmeraSecurityDbContext -p dark-xmera-security
         env:
-          DARK-XMERA-SECURITY-DB: Persist Security Info=False;User ID=dark-xmera; Password=P@ssword;Initial Catalog=dark-xmera-security;Data Source=dark-xmera.database.windows.net
+          DARK-XMERA-SECURITY-DB: '{{ secrets.CONNECTION_STRING }}'
 
       - name: Build with dotnet
         run: dotnet build --configuration Release dark-xmera-security
