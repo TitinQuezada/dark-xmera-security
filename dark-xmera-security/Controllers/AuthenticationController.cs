@@ -3,6 +3,7 @@ using Core.Interfaces;
 using Core.Managers;
 using Core.ViewModels.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace dark_xmera_security.Controllers
@@ -21,14 +22,24 @@ namespace dark_xmera_security.Controllers
         [HttpPost("login")]
         public async Task<HttpResponse<LoginResponseViewModel>> Login(LoginViewModel loginViewModel)
         {
-            IOperationResult<LoginResponseViewModel> operationResult = await _authenticationManager.Login(loginViewModel);
-
-            if (!operationResult.Success)
+            try
             {
-                return HttpResponse<LoginResponseViewModel>.GetFailedResponse(operationResult.Message);
+                IOperationResult<LoginResponseViewModel> operationResult = await _authenticationManager.Login(loginViewModel);
+
+                if (!operationResult.Success)
+                {
+                    return HttpResponse<LoginResponseViewModel>.GetFailedResponse(operationResult.Message);
+                }
+
+                return HttpResponse<LoginResponseViewModel>.GetSuccessResponse(operationResult.Entity);
+            }
+            catch (Exception ex)
+            {
+
+                return HttpResponse<LoginResponseViewModel>.GetFailedResponse(ex.ToString());
+
             }
 
-            return HttpResponse<LoginResponseViewModel>.GetSuccessResponse(operationResult.Entity);
         }
 
         [HttpPost("permissions")]
