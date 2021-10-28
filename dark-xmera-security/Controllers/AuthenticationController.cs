@@ -54,5 +54,12 @@ namespace dark_xmera_security.Controllers
 
             return HttpResponse<PermissionsViewModel>.GetSuccessResponse(operationResult.Entity);
         }
+
+        [HttpGet()]
+        public async Task<HttpResponse<PermissionsViewModel>> GetPermissions()
+        {
+
+            return HttpResponse<PermissionsViewModel>.GetSuccessResponse(new PermissionsViewModel());
+        }
     }
 }
