@@ -133,6 +133,14 @@ namespace dark_xmera_security
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dark_xmera_security v1"));
+
+            app.UseCors(op =>
+            {
+                op.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            });
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
