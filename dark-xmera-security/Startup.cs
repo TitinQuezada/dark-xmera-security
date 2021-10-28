@@ -129,10 +129,9 @@ namespace dark_xmera_security
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dark_xmera_security v1"));
             }
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "dark_xmera_security v1"));
 
             app.UseCors(op =>
             {
