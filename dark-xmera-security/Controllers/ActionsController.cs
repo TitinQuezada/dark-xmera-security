@@ -71,7 +71,7 @@ namespace dark_xmera_security.Controllers
             return HttpResponse<bool>.GetSuccessResponse(operationResult.Entity);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<HttpResponse<bool>> Delete(string id)
         {
             IOperationResult<bool> operationResult = await _actionManager.Delete(id);
