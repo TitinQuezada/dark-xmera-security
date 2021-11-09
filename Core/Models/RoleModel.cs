@@ -11,8 +11,8 @@ namespace Core.Models
 
         public IEnumerable<UserModel> Users { get; set; }
 
-        public IEnumerable<ModuleModel> Modules { get; set; }
+        public IEnumerable<ModuleRoleModel> ModuleRoles { get; set; }
 
-        public IEnumerable<ScreenModel> Screens { get; set; }
+        public IEnumerable<RoleScreenModel> RoleScreens { get; set; }
     }
 }

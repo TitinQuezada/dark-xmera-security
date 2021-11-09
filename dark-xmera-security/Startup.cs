@@ -106,6 +106,8 @@ namespace dark_xmera_security
             services.AddScoped<IModuleRepository, ModuleRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleScreenRepository, RoleScreenRepository>();
+            services.AddScoped<IModuleRoleRepository, ModuleRoleRepository>();
         }
 
         private void BuildManagersToScope(IServiceCollection services)

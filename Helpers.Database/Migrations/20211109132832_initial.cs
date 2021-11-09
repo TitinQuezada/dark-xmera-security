@@ -97,8 +97,8 @@ namespace Helpers.Database.Migrations
                     Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Url = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ModuleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     StatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -119,27 +119,37 @@ namespace Helpers.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ModuleModelRoleModel",
+                name: "ModuleRoles",
                 columns: table => new
                 {
-                    ModulesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RolesId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ModuleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ModuleModelRoleModel", x => new { x.ModulesId, x.RolesId });
+                    table.PrimaryKey("PK_ModuleRoles", x => new { x.ModuleId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_ModuleModelRoleModel_Modules_ModulesId",
-                        column: x => x.ModulesId,
+                        name: "FK_ModuleRoles_Modules_ModuleId",
+                        column: x => x.ModuleId,
                         principalTable: "Modules",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ModuleRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_ModuleModelRoleModel_Roles_RolesId",
-                        column: x => x.RolesId,
-                        principalTable: "Roles",
+                        name: "FK_ModuleRoles_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,7 +173,7 @@ namespace Helpers.Database.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Users_Statuses_StatusId",
                         column: x => x.StatusId,
@@ -173,25 +183,35 @@ namespace Helpers.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleModelScreenModel",
+                name: "RoleScreenModel",
                 columns: table => new
                 {
-                    RolesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ScreensId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ScreenId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleModelScreenModel", x => new { x.RolesId, x.ScreensId });
+                    table.PrimaryKey("PK_RoleScreenModel", x => new { x.ScreenId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_RoleModelScreenModel_Roles_RolesId",
-                        column: x => x.RolesId,
+                        name: "FK_RoleScreenModel_Roles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoleModelScreenModel_Screens_ScreensId",
-                        column: x => x.ScreensId,
+                        name: "FK_RoleScreenModel_Screens_ScreenId",
+                        column: x => x.ScreenId,
                         principalTable: "Screens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_RoleScreenModel_Statuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                 });
@@ -217,9 +237,39 @@ namespace Helpers.Database.Migrations
                 values: new object[] { "108d0430-3a5b-423b-a23a-393d35e681f4", "Este es el rol con todos los permisos", "Admin", 1 });
 
             migrationBuilder.InsertData(
+                table: "ModuleRoles",
+                columns: new[] { "ModuleId", "RoleId", "CreatedDate", "Id", "StatusId", "UpdatedDate" },
+                values: new object[] { "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7", "108d0430-3a5b-423b-a23a-393d35e681f4", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "52bcf1ae-0335-4746-9d95-92690e25af30", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
+            migrationBuilder.InsertData(
+                table: "Screens",
+                columns: new[] { "Id", "Description", "ModuleId", "Name", "StatusId", "Url" },
+                values: new object[,]
+                {
+                    { "c29c6db6-41e4-4be9-b7e9-c2432241641c", "Pantalla de configuración de roles", "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7", "Roles", 1, "roles" },
+                    { "6082c3a3-be96-4f63-8c1b-24b4f8de38f0", "Pantalla de configuración de modulos", "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7", "Modules", 1, "modules" },
+                    { "8e0a4306-f3fd-43f4-8ae0-c1f68bcd2d9b", "Pantalla de configuración de pantallas", "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7", "Screens", 1, "screens" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Email", "Password", "RoleId", "StatusId", "UserName" },
                 values: new object[] { "0dafe045-02ca-4e57-b4b8-b74bd4675dad", "admin258@yopmail.com", "21232f297a57a5a743894a0e4a801fc3", "108d0430-3a5b-423b-a23a-393d35e681f4", 1, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "RoleScreenModel",
+                columns: new[] { "RoleId", "ScreenId", "CreatedDate", "Id", "StatusId", "UpdatedDate" },
+                values: new object[] { "108d0430-3a5b-423b-a23a-393d35e681f4", "c29c6db6-41e4-4be9-b7e9-c2432241641c", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "b06d68c5-f241-4920-9feb-6c2b76f23d15", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
+            migrationBuilder.InsertData(
+                table: "RoleScreenModel",
+                columns: new[] { "RoleId", "ScreenId", "CreatedDate", "Id", "StatusId", "UpdatedDate" },
+                values: new object[] { "108d0430-3a5b-423b-a23a-393d35e681f4", "6082c3a3-be96-4f63-8c1b-24b4f8de38f0", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "1d068a28-954b-4453-93ea-54cf90059ff6", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+
+            migrationBuilder.InsertData(
+                table: "RoleScreenModel",
+                columns: new[] { "RoleId", "ScreenId", "CreatedDate", "Id", "StatusId", "UpdatedDate" },
+                values: new object[] { "108d0430-3a5b-423b-a23a-393d35e681f4", "8e0a4306-f3fd-43f4-8ae0-c1f68bcd2d9b", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "2db8f1ec-868c-40ca-a672-2c6462848c21", 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Actions_Name",
@@ -233,9 +283,14 @@ namespace Helpers.Database.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ModuleModelRoleModel_RolesId",
-                table: "ModuleModelRoleModel",
-                column: "RolesId");
+                name: "IX_ModuleRoles_RoleId",
+                table: "ModuleRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ModuleRoles_StatusId",
+                table: "ModuleRoles",
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Modules_Name",
@@ -255,11 +310,6 @@ namespace Helpers.Database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleModelScreenModel_ScreensId",
-                table: "RoleModelScreenModel",
-                column: "ScreensId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Roles_Name",
                 table: "Roles",
                 column: "Name",
@@ -268,6 +318,16 @@ namespace Helpers.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_StatusId",
                 table: "Roles",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleScreenModel_RoleId",
+                table: "RoleScreenModel",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleScreenModel_StatusId",
+                table: "RoleScreenModel",
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
@@ -327,10 +387,10 @@ namespace Helpers.Database.Migrations
                 name: "Actions");
 
             migrationBuilder.DropTable(
-                name: "ModuleModelRoleModel");
+                name: "ModuleRoles");
 
             migrationBuilder.DropTable(
-                name: "RoleModelScreenModel");
+                name: "RoleScreenModel");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -21,12 +21,16 @@ namespace Core.Managers
         private readonly IUserRepository _userRepository;
         private readonly IEncryptService _encryptService;
         private readonly IRoleRepository _roleRepository;
+        private readonly IModuleRepository _moduleRepository;
+        private readonly IScreenRepository _screenRepository;
 
-        public AuthenticationManager(IUserRepository userRepository, IEncryptService encryptService, IRoleRepository roleRepository)
+        public AuthenticationManager(IUserRepository userRepository, IEncryptService encryptService, IRoleRepository roleRepository, IModuleRepository moduleRepository, IScreenRepository screenRepository)
         {
             _userRepository = userRepository;
             _encryptService = encryptService;
             _roleRepository = roleRepository;
+            _moduleRepository = moduleRepository;
+            _screenRepository = screenRepository;
         }
 
         public async Task<IOperationResult<LoginResponseViewModel>> Login(LoginViewModel loginViewModel)
@@ -40,16 +44,45 @@ namespace Core.Managers
                 return OperationResult<LoginResponseViewModel>.Fail("Usuario o contraseña incorrecto");
             }
 
-            RoleModel role = await _roleRepository.FindAsync(role => role.Id == user.RoleId, role => role.Modules, role => role.Screens);
+            RoleModel role = await _roleRepository.FindAsync(role => role.Id == user.RoleId, role => role.ModuleRoles, role => role.RoleScreens);
+
+            IEnumerable<ModuleModel> modules = await GetModules(role.ModuleRoles);
+            IEnumerable<ScreenModel> screens = await GetScreens(role.RoleScreens);
 
             LoginResponseViewModel loginResponse = new LoginResponseViewModel
             {
                 Token = BuildToken(user),
-                Modules = role.Modules.Select(module => module.ToViewModel()),
-                Screens = role.Screens.Select(screen => screen.ToViewModel())
+                Modules = modules.Select(module => module.ToViewModel()),
+                Screens = screens.Select(screen => screen.ToViewModel())
             };
 
             return OperationResult<LoginResponseViewModel>.Ok(loginResponse);
+        }
+
+        private async Task<IEnumerable<ModuleModel>> GetModules(IEnumerable<ModuleRoleModel> moduleRoles)
+        {
+            List<ModuleModel> modules = new List<ModuleModel>();
+
+            foreach (var moduleRole in moduleRoles)
+            {
+                ModuleModel module = await _moduleRepository.FindAsync(module => module.Id == moduleRole.ModuleId);
+                modules.Add(module);
+            }
+
+            return modules;
+        }
+
+        private async Task<IEnumerable<ScreenModel>> GetScreens(IEnumerable<RoleScreenModel> roleScreens)
+        {
+            List<ScreenModel> modules = new List<ScreenModel>();
+
+            foreach (var roleScreen in roleScreens)
+            {
+                ScreenModel screen = await _screenRepository.FindAsync(screen => screen.Id == roleScreen.ScreenId);
+                modules.Add(screen);
+            }
+
+            return modules;
         }
 
         private string BuildToken(UserModel user)
@@ -88,12 +121,15 @@ namespace Core.Managers
 
             Claim claim = securityToken.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Role);
 
-            RoleModel role = await _roleRepository.FindAsync(role => role.Id == claim.Value, role => role.Modules, role => role.Screens);
+            RoleModel role = await _roleRepository.FindAsync(role => role.Id == claim.Value, role => role.ModuleRoles, role => role.RoleScreens);
+
+            IEnumerable<ModuleModel> modules = await GetModules(role.ModuleRoles);
+            IEnumerable<ScreenModel> screens = await GetScreens(role.RoleScreens);
 
             PermissionsViewModel permission = new PermissionsViewModel
             {
-                Modules = role.Modules.Select(module => module.ToViewModel()),
-                Screens = role.Screens.Select(screen => screen.ToViewModel())
+                Modules = modules.Select(module => module.ToViewModel()),
+                Screens = screens.Select(screen => screen.ToViewModel())
             };
 
             return OperationResult<PermissionsViewModel>.Ok(permission);

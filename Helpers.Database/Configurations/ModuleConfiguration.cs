@@ -14,11 +14,11 @@ namespace Helpers.Database.Configurations
 
             builder.Property(module => module.Description).IsRequired().HasMaxLength(100);
 
-            builder.HasIndex(screen => screen.Url).IsUnique();
-            builder.Property(screen => screen.Url).IsRequired().HasMaxLength(50);
+            builder.HasIndex(module => module.Url).IsUnique();
+            builder.Property(module => module.Url).IsRequired().HasMaxLength(50);
 
-            builder.Property(screen => screen.CreatedDate).HasDefaultValueSql("getdate()");
-            builder.Property(screen => screen.UpdatedDate).HasDefaultValueSql("getdate()");
+            builder.Property(module => module.CreatedDate).HasDefaultValueSql("getdate()");
+            builder.Property(module => module.UpdatedDate).HasDefaultValueSql("getdate()");
 
             builder.HasOne(module => module.Status).WithMany(status => status.Modules).HasForeignKey(module => module.StatusId).IsRequired();
 

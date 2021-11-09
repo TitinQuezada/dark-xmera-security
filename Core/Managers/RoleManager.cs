@@ -13,14 +13,14 @@ namespace Core.Managers
     public sealed class RoleManager
     {
         private readonly IRoleRepository _roleRepository;
-        private readonly IScreenRepository _screenRepository;
-        private readonly IModuleRepository _moduleRepository;
+        private readonly IRoleScreenRepository _roleScreenRepository;
+        private readonly IModuleRoleRepository _moduleRoleRepository;
 
-        public RoleManager(IRoleRepository roleRepository, IScreenRepository screenRepository, IModuleRepository moduleRepository)
+        public RoleManager(IRoleRepository roleRepository, IRoleScreenRepository roleScreenRepository, IModuleRoleRepository moduleRoleRepository)
         {
             _roleRepository = roleRepository;
-            _screenRepository = screenRepository;
-            _moduleRepository = moduleRepository;
+            _roleScreenRepository = roleScreenRepository;
+            _moduleRoleRepository = moduleRoleRepository;
         }
 
         public async Task<IOperationResult<IEnumerable<RoleViewModel>>> GetAll()
@@ -70,8 +70,8 @@ namespace Core.Managers
 
         private async Task<RoleModel> BuildRoleModel(RoleCreateOrEditViewModel role)
         {
-            IEnumerable<ScreenModel> screens = await GetScreens(role.ScreensIds);
-            IEnumerable<ModuleModel> modules = await GetModules(role.ModulesIds);
+            IEnumerable<RoleScreenModel> screens = await GetRoleScreens(role.ScreensIds);
+            IEnumerable<ModuleRoleModel> modules = await GetModules(role.ModulesIds);
 
             return new RoleModel
             {
@@ -80,31 +80,31 @@ namespace Core.Managers
                 Description = role.Description,
                 CreatedDate = role.CreatedDate,
                 UpdatedDate = role.UpdatedDate,
-                Screens = screens,
-                Modules = modules
+                RoleScreens = screens,
+                ModuleRoles = modules
             };
         }
 
-        private async Task<IEnumerable<ScreenModel>> GetScreens(IEnumerable<string> screensIds)
+        private async Task<IEnumerable<RoleScreenModel>> GetRoleScreens(IEnumerable<string> screensIds)
         {
-            List<ScreenModel> screens = new List<ScreenModel>();
+            List<RoleScreenModel> roleScreens = new List<RoleScreenModel>();
 
             foreach (string screenId in screensIds)
             {
-                ScreenModel screen = await _screenRepository.FindAsync(screen => screen.Id == screenId);
-                screens.Add(screen);
+                RoleScreenModel screen = await _roleScreenRepository.FindAsync(roleScreen => roleScreen.ScreenId == screenId);
+                roleScreens.Add(screen);
             }
 
-            return screens;
+            return roleScreens;
         }
 
-        private async Task<IEnumerable<ModuleModel>> GetModules(IEnumerable<string> modulesIds)
+        private async Task<IEnumerable<ModuleRoleModel>> GetModules(IEnumerable<string> modulesIds)
         {
-            List<ModuleModel> modules = new List<ModuleModel>();
+            List<ModuleRoleModel> modules = new List<ModuleRoleModel>();
 
             foreach (string moduleId in modulesIds)
             {
-                ModuleModel module = await _moduleRepository.FindAsync(screen => screen.Id == moduleId);
+                ModuleRoleModel module = await _moduleRoleRepository.FindAsync(moduleRole => moduleRole.ModuleId == moduleId);
                 modules.Add(module);
             }
 
@@ -118,13 +118,13 @@ namespace Core.Managers
                 return OperationResult<bool>.Fail("No se encontro el rol para editar");
             }
 
-            RoleModel roleToUpdateResult = await _roleRepository.FindAsync(action => action.Id == roleToUpdate.Id, action => action.Screens);
+            RoleModel roleToUpdateResult = await _roleRepository.FindAsync(role => role.Id == roleToUpdate.Id, action => action.RoleScreens);
 
             roleToUpdateResult.Name = roleToUpdate.Name;
             roleToUpdateResult.Description = roleToUpdate.Description;
             roleToUpdateResult.UpdatedDate = DateTime.Now;
-            roleToUpdateResult.Screens = await GetScreens(roleToUpdate.ScreensIds);
-            roleToUpdateResult.Modules = await GetModules(roleToUpdate.ModulesIds);
+            roleToUpdateResult.RoleScreens = await GetRoleScreens(roleToUpdate.ScreensIds);
+            roleToUpdateResult.ModuleRoles = await GetModules(roleToUpdate.ModulesIds);
 
             await _roleRepository.SaveAsync();
             return OperationResult<bool>.Ok();

@@ -10,7 +10,7 @@ namespace Core.Models
 
         public string Url { get; set; }
 
-        public IEnumerable<RoleModel> Roles { get; set; }
+        public IEnumerable<ModuleRoleModel> ModuleRoles { get; set; }
 
         public IEnumerable<ScreenModel> Screens { get; set; }
     }

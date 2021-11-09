@@ -111,6 +111,46 @@ namespace Helpers.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Models.ModuleRoleModel", b =>
+                {
+                    b.Property<string>("ModuleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ModuleId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("ModuleRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            ModuleId = "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7",
+                            RoleId = "108d0430-3a5b-423b-a23a-393d35e681f4",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = "52bcf1ae-0335-4746-9d95-92690e25af30",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("Core.Models.RoleModel", b =>
                 {
                     b.Property<string>("Id")
@@ -160,13 +200,73 @@ namespace Helpers.Database.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Models.RoleScreenModel", b =>
+                {
+                    b.Property<string>("ScreenId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ScreenId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("RoleScreenModel");
+
+                    b.HasData(
+                        new
+                        {
+                            ScreenId = "c29c6db6-41e4-4be9-b7e9-c2432241641c",
+                            RoleId = "108d0430-3a5b-423b-a23a-393d35e681f4",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = "b06d68c5-f241-4920-9feb-6c2b76f23d15",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ScreenId = "6082c3a3-be96-4f63-8c1b-24b4f8de38f0",
+                            RoleId = "108d0430-3a5b-423b-a23a-393d35e681f4",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = "1d068a28-954b-4453-93ea-54cf90059ff6",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ScreenId = "8e0a4306-f3fd-43f4-8ae0-c1f68bcd2d9b",
+                            RoleId = "108d0430-3a5b-423b-a23a-393d35e681f4",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = "2db8f1ec-868c-40ca-a672-2c6462848c21",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
             modelBuilder.Entity("Core.Models.ScreenModel", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -186,7 +286,9 @@ namespace Helpers.Database.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -206,6 +308,41 @@ namespace Helpers.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("Screens");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "c29c6db6-41e4-4be9-b7e9-c2432241641c",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Pantalla de configuración de roles",
+                            ModuleId = "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7",
+                            Name = "Roles",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Url = "roles"
+                        },
+                        new
+                        {
+                            Id = "6082c3a3-be96-4f63-8c1b-24b4f8de38f0",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Pantalla de configuración de modulos",
+                            ModuleId = "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7",
+                            Name = "Modules",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Url = "modules"
+                        },
+                        new
+                        {
+                            Id = "8e0a4306-f3fd-43f4-8ae0-c1f68bcd2d9b",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Pantalla de configuración de pantallas",
+                            ModuleId = "d6c1a4a2-4f70-4ce1-9dd7-87cad50a8ea7",
+                            Name = "Screens",
+                            StatusId = 1,
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Url = "screens"
+                        });
                 });
 
             modelBuilder.Entity("Core.Models.StatusModel", b =>
@@ -310,36 +447,6 @@ namespace Helpers.Database.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ModuleModelRoleModel", b =>
-                {
-                    b.Property<string>("ModulesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RolesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ModulesId", "RolesId");
-
-                    b.HasIndex("RolesId");
-
-                    b.ToTable("ModuleModelRoleModel");
-                });
-
-            modelBuilder.Entity("RoleModelScreenModel", b =>
-                {
-                    b.Property<string>("RolesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ScreensId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("RolesId", "ScreensId");
-
-                    b.HasIndex("ScreensId");
-
-                    b.ToTable("RoleModelScreenModel");
-                });
-
             modelBuilder.Entity("Core.Models.ActionModel", b =>
                 {
                     b.HasOne("Core.Models.StatusModel", "Status")
@@ -362,6 +469,33 @@ namespace Helpers.Database.Migrations
                     b.Navigation("Status");
                 });
 
+            modelBuilder.Entity("Core.Models.ModuleRoleModel", b =>
+                {
+                    b.HasOne("Core.Models.ModuleModel", "Module")
+                        .WithMany("ModuleRoles")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Models.RoleModel", "Role")
+                        .WithMany("ModuleRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Models.StatusModel", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Module");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("Core.Models.RoleModel", b =>
                 {
                     b.HasOne("Core.Models.StatusModel", "Status")
@@ -369,6 +503,33 @@ namespace Helpers.Database.Migrations
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("Core.Models.RoleScreenModel", b =>
+                {
+                    b.HasOne("Core.Models.RoleModel", "Role")
+                        .WithMany("RoleScreens")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Models.ScreenModel", "Screen")
+                        .WithMany("RoleScreens")
+                        .HasForeignKey("ScreenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Models.StatusModel", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Screen");
 
                     b.Navigation("Status");
                 });
@@ -411,44 +572,25 @@ namespace Helpers.Database.Migrations
                     b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("ModuleModelRoleModel", b =>
-                {
-                    b.HasOne("Core.Models.ModuleModel", null)
-                        .WithMany()
-                        .HasForeignKey("ModulesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Models.RoleModel", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RoleModelScreenModel", b =>
-                {
-                    b.HasOne("Core.Models.RoleModel", null)
-                        .WithMany()
-                        .HasForeignKey("RolesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Models.ScreenModel", null)
-                        .WithMany()
-                        .HasForeignKey("ScreensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Core.Models.ModuleModel", b =>
                 {
+                    b.Navigation("ModuleRoles");
+
                     b.Navigation("Screens");
                 });
 
             modelBuilder.Entity("Core.Models.RoleModel", b =>
                 {
+                    b.Navigation("ModuleRoles");
+
+                    b.Navigation("RoleScreens");
+
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Core.Models.ScreenModel", b =>
+                {
+                    b.Navigation("RoleScreens");
                 });
 
             modelBuilder.Entity("Core.Models.StatusModel", b =>

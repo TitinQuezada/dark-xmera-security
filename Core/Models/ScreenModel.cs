@@ -14,6 +14,6 @@ namespace Core.Models
 
         public ModuleModel Module { get; set; }
 
-        public IEnumerable<RoleModel> Roles { get; set; }
+        public IEnumerable<RoleScreenModel> RoleScreens { get; set; }
     }
 }

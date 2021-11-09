@@ -23,9 +23,13 @@ namespace Helpers.Database
 
         public DbSet<StatusModel> Statuses { get; set; }
 
+        public DbSet<ModuleRoleModel> ModuleRoles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(DarkXmeraSecurityDbContext)));
+
+
 
             base.OnModelCreating(modelBuilder);
         }
