@@ -84,19 +84,19 @@ namespace dark_xmera_security
             string validAudience = Environment.GetEnvironmentVariable(EnviromentVariables.JwtValidAudience);
             string secretKey = Environment.GetEnvironmentVariable(EnviromentVariables.JwtSecretKey);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = validIssuer,
-                    ValidAudience = validAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
-                };
-            });
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            // {
+            //     options.TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         ValidateIssuer = true,
+            //         ValidateAudience = true,
+            //         ValidateLifetime = true,
+            //         ValidateIssuerSigningKey = true,
+            //         ValidIssuer = validIssuer,
+            //         ValidAudience = validAudience,
+            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+            //     };
+            // });
         }
 
         private void BuildRepositoriesToScope(IServiceCollection services)
