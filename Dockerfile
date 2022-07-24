@@ -7,7 +7,7 @@ COPY [".", "dark-xmera-security/"]
 RUN dotnet restore ./dark-xmera-security/dark-xmera-security/dark-xmera-security.csproj
 
 # copy and publish app and libraries
-RUN dotnet build "./dark-xmera-security/dark-xmera-security/dark-xmera-security.csproj" -c Release --no-restore
+RUN dotnet build "./dark-xmera-security/dark-xmera-security/dark-xmera-security.csproj" -c Release
 
 
 # final stage/image
