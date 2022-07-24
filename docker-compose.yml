@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  web-api:
+    build: .
+    ports:
+      - "2500:80"
+    environment:
+      - DARK-XMERA-SECURITY-DB=Persist Security Info=False;User ID=SA;Password=Teclado2021*;Initial Catalog=dark-xmera-security;Data Source=database
+      - DARK-XMERA-SECURITY-VALID-ISSUER=http://localhost:80
+      - DARK-XMERA-SECURITY-VALID-AUDIENCE=http://localhost:80
+      - DARK-XMERA-SECURITY-JWT-SECRET-KEY=EstaEsLaClaveSecreta023ParaueesteClaroCompañeroChucky737373
+
+    depends_on:
+      - database
+
+  database:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+            SA_PASSWORD: "Teclado2021*"
+            ACCEPT_EULA: "Y"
